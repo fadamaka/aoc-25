@@ -14,16 +14,13 @@ int main() {
         result += stoi(lines[i].substr(1)) / 100;
         int turn = stoi(lines[i].substr(1)) % 100;
         if (lines[i][0] == 'L') {
-            if (counter - turn < 0) {
-                if (counter != 0) {
-                    result++;
-                }
-                counter += 100;
-            }
-            if (counter == turn && counter != 0) {
+            if (counter <= turn && counter != 0) {
                 result++;
             }
             counter -= turn;
+            if (counter < 0) {
+                counter += 100;
+            }
         } else {
             counter += turn;
             result += counter / 100;
