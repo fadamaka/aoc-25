@@ -7,9 +7,6 @@
 
 using namespace std;
 
-long long clever(vector<string> ranges);
-long long bruteforce(vector<string> ranges);
-
 int main() {
     vector<string> lines = readFileIntoVector("data.txt");
     vector<string> ranges = splitByChar(lines[0], ',');
