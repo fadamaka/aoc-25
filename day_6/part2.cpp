@@ -21,7 +21,6 @@ vector<string> fixSplit(vector<string> v) {
 
 int main() {
     vector<string> lines = readFileIntoVector("data.txt");
-    vector<vector<long long>> numVecs;
     long long result = 0LL;
 
     vector<int> splitAt;
