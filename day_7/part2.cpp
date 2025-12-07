@@ -8,31 +8,30 @@
 
 using namespace std;
 
-map<pair<int, int>, long long> cache;
+typedef long long i64;
 
-long long countSplit(int y, int x, vector<string> v, long long count) {
+map<pair<int, int>, i64> cache;
+
+i64 countSplit(int y, int x, vector<string> v) {
+    i64 count;
     if (cache.find({y + 1, x}) != cache.end()) {
         return cache[{y + 1, x}];
     }
     if (y + 1 > v.size() - 1) {
-        cache.insert({{y + 1, x}, 1});
-        return 1LL;
+        count = 1;
+    } else {
+        if (v[y + 1][x] == '.') {
+            count = countSplit(y + 1, x, v);
+        }
+        if (v[y + 1][x] == '^') {
+            count = countSplit(y + 1, x - 1, v) + countSplit(y + 1, x + 1, v);
+        }
     }
-    if (v[y + 1][x] == '.') {
-        count = countSplit(y + 1, x, v, count);
-        cache.insert({{y + 1, x}, count});
-        return count;
-    }
-    if (v[y + 1][x] == '^') {
-        // cout << "split at y: " << y + 1 << " x: " << x << endl;
-        count = countSplit(y + 1, x - 1, v, count) + countSplit(y + 1, x + 1, v, count);
-        cache.insert({{y + 1, x}, count});
-        return count;
-    }
-    throw "oops";
+    cache.insert({{y + 1, x}, count});
+    return count;
 }
 
 int main() {
     vector<string> lines = readFileIntoVector("data.txt");
-    cout << countSplit(0, lines[0].find('S'), lines, 0LL) << endl;
+    cout << countSplit(0, lines[0].find('S'), lines) << endl;
 }
