@@ -8,15 +8,15 @@
 
 using namespace std;
 
-map<pair<int, int>, set<pair<int, int>>> cache;
+map<pair<int, int>, long long> cache;
 
-set<pair<int, int>> countSplit(int y, int x, vector<string> v, set<pair<int, int>> count) {
+long long countSplit(int y, int x, vector<string> v, long long count) {
     if (cache.find({y + 1, x}) != cache.end()) {
         return cache[{y + 1, x}];
     }
     if (y + 1 > v.size() - 1) {
-        cache.insert({{y + 1, x}, count});
-        return count;
+        cache.insert({{y + 1, x}, 1});
+        return 1LL;
     }
     if (v[y + 1][x] == '.') {
         count = countSplit(y + 1, x, v, count);
@@ -25,9 +25,7 @@ set<pair<int, int>> countSplit(int y, int x, vector<string> v, set<pair<int, int
     }
     if (v[y + 1][x] == '^') {
         // cout << "split at y: " << y + 1 << " x: " << x << endl;
-        count.insert({y + 1, x});
-        count.merge(countSplit(y + 1, x - 1, v, count));
-        count.merge(countSplit(y + 1, x + 1, v, count));
+        count = countSplit(y + 1, x - 1, v, count) + countSplit(y + 1, x + 1, v, count);
         cache.insert({{y + 1, x}, count});
         return count;
     }
@@ -36,6 +34,5 @@ set<pair<int, int>> countSplit(int y, int x, vector<string> v, set<pair<int, int
 
 int main() {
     vector<string> lines = readFileIntoVector("data.txt");
-    set<pair<int, int>> count;
-    cout << countSplit(0, lines[0].find('S'), lines, count).size() << endl;
+    cout << countSplit(0, lines[0].find('S'), lines, 0LL) << endl;
 }
